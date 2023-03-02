@@ -1,0 +1,11 @@
+D:\CodingProjects\Rider\WindowPrograming\Week1\bin\Debug\Week1.exe.config
+D:\CodingProjects\Rider\WindowPrograming\Week1\bin\Debug\Week1.exe
+D:\CodingProjects\Rider\WindowPrograming\Week1\bin\Debug\Week1.pdb
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.csproj.AssemblyReference.cache
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.Properties.Resources.resources
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.csproj.GenerateResource.cache
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.csproj.CoreCompileInputs.cache
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.exe
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.pdb
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.Form1.resources
+D:\CodingProjects\Rider\WindowPrograming\Week1\obj\Debug\Week1.PTBH.resources

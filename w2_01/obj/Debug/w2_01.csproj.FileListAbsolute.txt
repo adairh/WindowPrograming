@@ -1,0 +1,15 @@
+D:\CodingProjects\Rider\WindowPrograming\w2_01\bin\Debug\w2_01.exe.config
+D:\CodingProjects\Rider\WindowPrograming\w2_01\bin\Debug\w2_01.exe
+D:\CodingProjects\Rider\WindowPrograming\w2_01\bin\Debug\w2_01.pdb
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.csproj.AssemblyReference.cache
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.Properties.Resources.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.csproj.GenerateResource.cache
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.csproj.CoreCompileInputs.cache
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.exe
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.pdb
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.ButtonExample.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.CheckBoxExample.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.CheckedListboxExample.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.ComboBoxExample.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.DateTimePicker.resources
+D:\CodingProjects\Rider\WindowPrograming\w2_01\obj\Debug\w2_01.Label.resources

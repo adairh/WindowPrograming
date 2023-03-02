@@ -1,0 +1,10 @@
+D:\CodingProjects\Rider\WindowPrograming\textEx1\bin\Debug\textEx1.exe.config
+D:\CodingProjects\Rider\WindowPrograming\textEx1\bin\Debug\textEx1.exe
+D:\CodingProjects\Rider\WindowPrograming\textEx1\bin\Debug\textEx1.pdb
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.csproj.AssemblyReference.cache
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.Properties.Resources.resources
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\Ex1_t.Form1.resources
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.csproj.GenerateResource.cache
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.csproj.CoreCompileInputs.cache
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.exe
+D:\CodingProjects\Rider\WindowPrograming\textEx1\obj\Debug\textEx1.pdb
