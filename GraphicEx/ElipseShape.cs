@@ -7,23 +7,26 @@ namespace GraphicEx
     {
         
         private bool fill = false;
-        private Brush brush = Brushes.White;
-        public ElipseShape(Graphics graphics) : base(graphics)
+        public ElipseShape(Graphics graphics, bool fill = false) : base(graphics)
         {
+            setFill(fill);
         }
 
         public override void Draw()
         {
-            float bigx = started.X < ended.X ? started.X : ended.X;
-            float bigy = started.Y < ended.Y ? started.Y : ended.Y;
-            if (fill) graphics.FillEllipse(brush, bigx, bigy, Math.Abs(ended.X - started.X), Math.Abs(ended.Y - started.Y));
-            graphics.DrawEllipse(pen, bigx, bigy, Math.Abs(ended.X - started.X), Math.Abs(ended.Y - started.Y));
+            if (fill) graphics.FillEllipse(tools.brush, bounds);
+            graphics.DrawEllipse(tools.pen, bounds);
         }
 
-        public void setFill(bool fill, Brush brush)
-        { 
+        public override void finishDraw()
+        {
+            path.AddEllipse(bounds);
+        }
+
+
+        public void setFill(bool fill)
+        {
             this.fill = fill;
-            this.brush = brush;
         }
     }
 }

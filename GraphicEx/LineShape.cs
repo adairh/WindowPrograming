@@ -9,7 +9,13 @@ namespace GraphicEx
         }
         public override void Draw()
         {
-            graphics.DrawLine(pen, started, ended);
+            graphics.DrawLine(tools.pen, started, ended);
+            
+        }
+
+        public override void finishDraw()
+        {
+            path.AddLine(started, ended);
         }
     }
 }

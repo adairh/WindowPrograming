@@ -6,22 +6,25 @@ namespace GraphicEx
     public class RectShape : Shape, IFillable
     {
         private bool fill = false;
-        private Brush brush = Brushes.White;
-        public RectShape(Graphics graphics) : base(graphics)
+        public RectShape(Graphics graphics, bool fill = false) : base(graphics)
         {
+            setFill(fill);
         }
 
         public override void Draw()
-        {
-            float bigx = started.X < ended.X ? started.X : ended.X;
-            float bigy = started.Y < ended.Y ? started.Y : ended.Y;
-            if (fill) graphics.FillRectangle(brush, bigx, bigy, Math.Abs(ended.X - started.X), Math.Abs(ended.Y - started.Y));
-            graphics.DrawRectangle(pen, bigx, bigy, Math.Abs(ended.X - started.X), Math.Abs(ended.Y - started.Y));
+        { 
+            if (fill) graphics.FillRectangle(tools.brush, bounds);
+            graphics.DrawRectangle(tools.pen, bounds.X, bounds.Y, bounds.Width, bounds.Height);
         }
-        public void setFill(bool fill, Brush brush)
+
+        public override void finishDraw()
         {
-            this.fill = fill;
-            this.brush = brush;
+            path.AddRectangle(bounds);
+        }
+
+        public void setFill(bool fill)
+        {
+            this.fill = fill; 
         }
     }
 }

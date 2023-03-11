@@ -13,23 +13,23 @@ namespace GraphicEx
 {
     public partial class Form1 : Form
     {
-        private List<Shape> shapes;
         Graphics gp;
-        //bool bLine = false;
-
+        private Bitmap bitmap;
+        private Stack<Shape> shapes;
         private mode m = mode.None;
-         
-        Brush myBrush;
-
-
         private Point tempPoint;
         bool isStart=true;//a flag
 
         private Shape currentShape;
+        
+        
+        private Shape movingShape;
+        private Point clickedMovePoint;
+        
         public Form1()
         {
             InitializeComponent();
-            shapes = new List<Shape>();
+            shapes = new Stack<Shape>();
             gp = this.plMain.CreateGraphics();
             tempPoint = new Point();
         }
@@ -39,44 +39,74 @@ namespace GraphicEx
             m = mode.Line;
             currentShape = new LineShape(gp);
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRect_Click(object sender, EventArgs e)
         {
             m = mode.Rect;
             currentShape = new RectShape(gp);
         }
         
         
-        private void button2_Click(object sender, EventArgs e)
+        private void btnFilledRect_Click(object sender, EventArgs e)
         {
             m = mode.FilledRect;
-            currentShape = new RectShape(gp);
-            ((RectShape)currentShape).setFill(true, myBrush);
+            currentShape = new RectShape(gp, true);
         }
         
         
-        private void button3_Click(object sender, EventArgs e)
+        private void btnEclipse_Click(object sender, EventArgs e)
         {
             m = mode.Eclipse;
             currentShape = new ElipseShape(gp);
         }
         
         
-        private void button4_Click(object sender, EventArgs e)
+        private void btnFilledEclipse_Click(object sender, EventArgs e)
         {
             m = mode.FilledEclipse;
-            currentShape = new ElipseShape(gp);
-            ((ElipseShape)currentShape).setFill(true, myBrush);
+            currentShape = new ElipseShape(gp, true);
+        }
+        
+        private void btnArc_Click(object sender, EventArgs e)
+        {
+            m = mode.Arc;
+            currentShape = new ArcShape(gp);
+            currentShape.tools.data.Add(arcAngleBar.Value);
+        }
+        
+        private void btnPolygon_Click(object sender, EventArgs e)
+        {
+            m = mode.Polygon;
+            currentShape = new PolygonShape(gp);
+            currentShape.tools.data.Add((int)polygonNum.Value);
+        }
+        private void btnFilledPolygon_Click(object sender, EventArgs e)
+        {
+            m = mode.FilledPolygon;
+            currentShape = new PolygonShape(gp, true);
+            currentShape.tools.data.Add((int)polygonNum.Value);
         }
         private void plMain_MouseDown(object sender, MouseEventArgs e)
         {
-            if (currentShape == null) return;
+            if (currentShape == null)
+            {
+                foreach (Shape shape in shapes)
+                {
+                    if (shape.bounds.Contains(e.Location))
+                    {
+                        movingShape = shape;
+                        clickedMovePoint = e.Location;
+                        break;
+                    }
+                }
+                return;
+            }
             if (isStart)//first click
             {
                 this.tempPoint.X = e.X;
                 this.tempPoint.Y = e.Y;
                 this.isStart = false;
-                currentShape.pen = new Pen(colorDialog1.Color, trackBar1.Value);
-                myBrush = new SolidBrush(colorDialog1.Color);
+                currentShape.tools.pen = new Pen(colorDialog1.Color, trackBar1.Value);
+                currentShape.tools.brush = new SolidBrush(colorDialog1.Color);
                 currentShape.started = tempPoint;
             }
         }
@@ -97,8 +127,14 @@ namespace GraphicEx
                 
                 this.isStart = true;
                 this.m = mode.None;
-                shapes.Add(currentShape);
-                currentShape = null; 
+                shapes.Push(currentShape);
+                currentShape.finishDraw();
+                currentShape = null;
+            }
+            else
+            {
+                clickedMovePoint = new Point();
+                movingShape = null;
             }
         }
         
@@ -109,19 +145,93 @@ namespace GraphicEx
                 tempPoint.X = e.X;
                 tempPoint.Y = e.Y;
                 currentShape.ended = tempPoint;
-                foreach (Shape s in shapes)
-                {
-                    s.Draw();
-                }
                 currentShape.Drawing(plMain);
-                
+            }
+            else
+            {
+                if (movingShape != null)
+                {
+                    movingShape.started.X += e.X - clickedMovePoint.X;
+                    movingShape.started.Y += e.Y - clickedMovePoint.Y;
+                    
+                    movingShape.ended.X += e.X - clickedMovePoint.X;
+                    movingShape.ended.Y += e.Y - clickedMovePoint.Y;
+                    
+                    clickedMovePoint = e.Location;
+                    movingShape.Drawing(plMain);
+                }
+            }
+            foreach (Shape s in shapes)
+            {
+                s.Draw();
             }
 
         }
 
+        private int tSX, tSY, tEX, tEY, coX, coY;
+        private void plMain_MouseWheel(object sender, MouseEventArgs e)
+        {
+            Shape alter = null;
+            foreach (Shape shape in shapes)
+            {
+                if (shape.bounds.Contains(e.Location))
+                {
+                    alter = shape;
+                    break;
+                }
+            }
+            if (alter == null) return;
+            // Get the number of scrolling steps.
+            int scrollDelta = e.Delta;
+            //
+            // MessageBox.Show((alter.ended.X - alter.started.X) / alter.getDistance() * 5 + " " +
+            //                 (alter.ended.Y - alter.started.Y) / alter.getDistance() * 5);
+            coX = (int)((double)(alter.ended.X - alter.started.X) / alter.getDistance() * 10);
+            coY = (int)((double)(alter.ended.Y - alter.started.Y) / alter.getDistance() * 10);
+            
+            if (scrollDelta > 0)
+            {
+                tSX = alter.started.X - coX;
+                tSY = alter.started.Y - coY;
+                    
+                tEX = alter.ended.X + coX;
+                tEY = alter.ended.Y + coY;
+            }
+            else
+            {
+                tSX = alter.started.X + coX;
+                tSY = alter.started.Y + coY;
+                    
+                tEX = alter.ended.X - coX;
+                tEY = alter.ended.Y - coY;
+            }
+            
+            if (tSX <= 0 
+                || tSY <= 0
+                || tEX >= plMain.Bounds.Width
+                || tEY >= plMain.Bounds.Height
+                || tSX >= tEX 
+                || tSY >= tEY)
+            {
+                return;
+            }
+
+            alter.started.X = tSX;
+            alter.started.Y = tSY;
+
+            alter.ended.X = tEX;
+            alter.ended.Y = tEY;
+            
+            alter.Drawing(plMain);
+            foreach (Shape s in shapes)
+            {
+                s.Draw();
+            }
+        }
+
         enum mode
         {
-            Line, Rect, FilledRect, Eclipse, FilledEclipse, None
+            Line, Rect, FilledRect, Eclipse, FilledEclipse, Arc, Polygon, FilledPolygon, None
         }
 
         private void button1_Click_1(object sender, EventArgs e)

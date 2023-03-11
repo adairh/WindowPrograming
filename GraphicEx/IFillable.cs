@@ -4,6 +4,6 @@ namespace GraphicEx
 {
     public interface IFillable
     {
-        void setFill(bool fill, Brush brush);
+        void setFill(bool fill);
     }
 }
