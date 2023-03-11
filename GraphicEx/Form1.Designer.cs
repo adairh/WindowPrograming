@@ -38,8 +38,8 @@ namespace GraphicEx
             this.filledRectButton = new System.Windows.Forms.Button();
             this.elipseLineButton = new System.Windows.Forms.Button();
             this.filledElipButton = new System.Windows.Forms.Button();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.button1 = new System.Windows.Forms.Button();
+            this.penColor = new System.Windows.Forms.ColorDialog();
+            this.brushColorButton = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.btnArc = new System.Windows.Forms.Button();
             this.arcAngleBar = new System.Windows.Forms.TrackBar();
@@ -47,6 +47,8 @@ namespace GraphicEx
             this.button3 = new System.Windows.Forms.Button();
             this.polygonNum = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.penColorButton = new System.Windows.Forms.Button();
+            this.brushColor = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arcAngleBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.polygonNum)).BeginInit();
@@ -62,7 +64,7 @@ namespace GraphicEx
             this.plMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.plMain_MouseDown);
             this.plMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.plMain_MouseMove);
             this.plMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.plMain_MouseUp);
-            this.plMain.MouseWheel += new MouseEventHandler(this.plMain_MouseWheel);
+            this.plMain.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.plMain_MouseWheel);
             // 
             // bth_line
             // 
@@ -114,15 +116,15 @@ namespace GraphicEx
             this.filledElipButton.UseVisualStyleBackColor = true;
             this.filledElipButton.Click += new System.EventHandler(this.btnFilledEclipse_Click);
             // 
-            // button1
+            // brushColorButton
             // 
-            this.button1.Location = new System.Drawing.Point(29, 337);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(174, 40);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Chọn màu";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.brushColorButton.Location = new System.Drawing.Point(118, 337);
+            this.brushColorButton.Name = "brushColorButton";
+            this.brushColorButton.Size = new System.Drawing.Size(85, 40);
+            this.brushColorButton.TabIndex = 3;
+            this.brushColorButton.Text = "Chọn màu Fill";
+            this.brushColorButton.UseVisualStyleBackColor = true;
+            this.brushColorButton.Click += new System.EventHandler(this.btnBrushColor);
             // 
             // trackBar1
             // 
@@ -190,6 +192,16 @@ namespace GraphicEx
             this.label1.TabIndex = 7;
             this.label1.Text = "Number of Vertex";
             // 
+            // penColorButton
+            // 
+            this.penColorButton.Location = new System.Drawing.Point(29, 337);
+            this.penColorButton.Name = "penColorButton";
+            this.penColorButton.Size = new System.Drawing.Size(85, 40);
+            this.penColorButton.TabIndex = 3;
+            this.penColorButton.Text = "Chọn màu bút";
+            this.penColorButton.UseVisualStyleBackColor = true;
+            this.penColorButton.Click += new System.EventHandler(this.btnPenColor);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -203,7 +215,8 @@ namespace GraphicEx
             this.Controls.Add(this.btnArc);
             this.Controls.Add(this.arcAngleBar);
             this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.penColorButton);
+            this.Controls.Add(this.brushColorButton);
             this.Controls.Add(this.filledElipButton);
             this.Controls.Add(this.elipseLineButton);
             this.Controls.Add(this.filledRectButton);
@@ -219,6 +232,10 @@ namespace GraphicEx
             this.PerformLayout();
         }
 
+        private System.Windows.Forms.ColorDialog penColor;
+
+        private System.Windows.Forms.Button penColorButton;
+
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.NumericUpDown polygonNum;
         private System.Windows.Forms.Label label1;
@@ -231,8 +248,8 @@ namespace GraphicEx
 
         private System.Windows.Forms.TrackBar trackBar1;
 
-        private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ColorDialog brushColor;
+        private System.Windows.Forms.Button brushColorButton;
 
         private System.Windows.Forms.Button elipseLineButton;
         private System.Windows.Forms.Button filledElipButton;

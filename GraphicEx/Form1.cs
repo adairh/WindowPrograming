@@ -15,7 +15,7 @@ namespace GraphicEx
     {
         Graphics gp;
         private Bitmap bitmap;
-        private Stack<Shape> shapes;
+        private List<Shape> shapes;
         private mode m = mode.None;
         private Point tempPoint;
         bool isStart=true;//a flag
@@ -29,7 +29,7 @@ namespace GraphicEx
         public Form1()
         {
             InitializeComponent();
-            shapes = new Stack<Shape>();
+            shapes = new List<Shape>();
             gp = this.plMain.CreateGraphics();
             tempPoint = new Point();
         }
@@ -89,15 +89,12 @@ namespace GraphicEx
         {
             if (currentShape == null)
             {
-                foreach (Shape shape in shapes)
-                {
-                    if (shape.bounds.Contains(e.Location))
-                    {
-                        movingShape = shape;
-                        clickedMovePoint = e.Location;
-                        break;
-                    }
+                movingShape = getShapeAt(e.Location);
+                if (movingShape != null)
+                { 
+                    clickedMovePoint = e.Location;
                 }
+                
                 return;
             }
             if (isStart)//first click
@@ -105,8 +102,8 @@ namespace GraphicEx
                 this.tempPoint.X = e.X;
                 this.tempPoint.Y = e.Y;
                 this.isStart = false;
-                currentShape.tools.pen = new Pen(colorDialog1.Color, trackBar1.Value);
-                currentShape.tools.brush = new SolidBrush(colorDialog1.Color);
+                currentShape.tools.pen = new Pen(penColor.Color, trackBar1.Value);
+                currentShape.tools.brush = new SolidBrush(brushColor.Color);
                 currentShape.started = tempPoint;
             }
         }
@@ -127,7 +124,7 @@ namespace GraphicEx
                 
                 this.isStart = true;
                 this.m = mode.None;
-                shapes.Push(currentShape);
+                shapes.Add(currentShape);
                 currentShape.finishDraw();
                 currentShape = null;
             }
@@ -146,6 +143,10 @@ namespace GraphicEx
                 tempPoint.Y = e.Y;
                 currentShape.ended = tempPoint;
                 currentShape.Drawing(plMain);
+                foreach (Shape s in shapes)
+                {
+                    s.Draw();
+                }
             }
             else
             {
@@ -159,27 +160,20 @@ namespace GraphicEx
                     
                     clickedMovePoint = e.Location;
                     movingShape.Drawing(plMain);
+                    foreach (Shape s in shapes)
+                    {
+                        s.Draw();
+                    }
                 }
             }
-            foreach (Shape s in shapes)
-            {
-                s.Draw();
-            }
+            
 
         }
 
         private int tSX, tSY, tEX, tEY, coX, coY;
         private void plMain_MouseWheel(object sender, MouseEventArgs e)
         {
-            Shape alter = null;
-            foreach (Shape shape in shapes)
-            {
-                if (shape.bounds.Contains(e.Location))
-                {
-                    alter = shape;
-                    break;
-                }
-            }
+            Shape alter = getShapeAt(e.Location);
             if (alter == null) return;
             // Get the number of scrolling steps.
             int scrollDelta = e.Delta;
@@ -206,14 +200,14 @@ namespace GraphicEx
                 tEY = alter.ended.Y - coY;
             }
             
-            if (tSX <= 0 
+            if (/*tSX <= 0 
                 || tSY <= 0
                 || tEX >= plMain.Bounds.Width
                 || tEY >= plMain.Bounds.Height
-                || tSX >= tEX 
+                ||*/ tSX >= tEX 
                 || tSY >= tEY)
             {
-                return;
+                //return;
             }
 
             alter.started.X = tSX;
@@ -234,9 +228,27 @@ namespace GraphicEx
             Line, Rect, FilledRect, Eclipse, FilledEclipse, Arc, Polygon, FilledPolygon, None
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnBrushColor(object sender, EventArgs e)
         {
-            colorDialog1.ShowDialog();
+            brushColor.ShowDialog();
+        }
+        
+        private void btnPenColor(object sender, EventArgs e)
+        {
+            penColor.ShowDialog();
+        }
+
+        private Shape getShapeAt(Point p)
+        {
+            foreach (Shape shape in shapes)
+            {
+                if (shape.bounds.Contains(p))
+                {
+                    return shape;
+                }
+            }
+
+            return null;
         }
     }
 }
