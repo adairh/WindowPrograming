@@ -25,13 +25,19 @@ namespace GraphicEx
         
         private Shape movingShape;
         private Point clickedMovePoint;
+
+        private List<Shape> movingShapes;
+
+        private bool tempGroupWorking;
         
         public Form1()
         {
             InitializeComponent();
             shapes = new List<Shape>();
+            movingShapes = new List<Shape>();
             gp = this.plMain.CreateGraphics();
             tempPoint = new Point();
+            tempGroupWorking = false;
         }
         private void btnDuongThang_Click(object sender, EventArgs e)
         {
@@ -87,14 +93,15 @@ namespace GraphicEx
         }
         private void plMain_MouseDown(object sender, MouseEventArgs e)
         {
+            
             if (currentShape == null)
             {
-                movingShape = getShapeAt(e.Location);
-                if (movingShape != null)
-                { 
-                    clickedMovePoint = e.Location;
-                }
-                
+                tempGroupWorking = false;
+                    movingShape = getShapeAt(e.Location);
+                    if (movingShape != null)
+                    {
+                        clickedMovePoint = e.Location;
+                    }
                 return;
             }
             if (isStart)//first click
@@ -103,6 +110,9 @@ namespace GraphicEx
                 this.tempPoint.Y = e.Y;
                 this.isStart = false;
                 currentShape.tools.pen = new Pen(penColor.Color, trackBar1.Value);
+                DashStyle sd;
+                DashStyle.TryParse(comboBox.SelectedItem.ToString(), true, out sd);
+                currentShape.tools.pen.DashStyle = sd;
                 currentShape.tools.brush = new SolidBrush(brushColor.Color);
                 currentShape.started = tempPoint;
             }
@@ -125,7 +135,7 @@ namespace GraphicEx
                 this.isStart = true;
                 this.m = mode.None;
                 shapes.Add(currentShape);
-                currentShape.finishDraw();
+                //currentShape.finishDraw();
                 currentShape = null;
             }
             else
@@ -150,26 +160,25 @@ namespace GraphicEx
             }
             else
             {
-                if (movingShape != null)
-                {
-                    movingShape.started.X += e.X - clickedMovePoint.X;
-                    movingShape.started.Y += e.Y - clickedMovePoint.Y;
-                    
-                    movingShape.ended.X += e.X - clickedMovePoint.X;
-                    movingShape.ended.Y += e.Y - clickedMovePoint.Y;
-                    
-                    clickedMovePoint = e.Location;
-                    movingShape.Drawing(plMain);
-                    foreach (Shape s in shapes)
+                    if (movingShape != null)
                     {
-                        s.Draw();
+                        movingShape.started.X += e.X - clickedMovePoint.X;
+                        movingShape.started.Y += e.Y - clickedMovePoint.Y;
+                    
+                        movingShape.ended.X += e.X - clickedMovePoint.X;
+                        movingShape.ended.Y += e.Y - clickedMovePoint.Y;
+                    
+                        clickedMovePoint = e.Location;
+                        movingShape.Drawing(plMain);
+                        foreach (Shape s in shapes)
+                        {
+                            s.Draw();
+                        }
                     }
-                }
             }
-            
-
         }
 
+        
         private int tSX, tSY, tEX, tEY, coX, coY;
         private void plMain_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -231,11 +240,13 @@ namespace GraphicEx
         private void btnBrushColor(object sender, EventArgs e)
         {
             brushColor.ShowDialog();
+            brushColorButton.BackColor = brushColor.Color;
         }
         
         private void btnPenColor(object sender, EventArgs e)
         {
             penColor.ShowDialog();
+            penColorButton.BackColor = penColor.Color;
         }
 
         private Shape getShapeAt(Point p)
@@ -250,5 +261,10 @@ namespace GraphicEx
 
             return null;
         }
+
+        
+        
+        
+        
     }
 }
